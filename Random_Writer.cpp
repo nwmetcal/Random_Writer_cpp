@@ -1,16 +1,11 @@
 //
 //  Random_Writer.cpp
-//  Sorting Project
 //
-//  Created by Nicholas Metcalf on 1/6/15.
-//  Copyright (c) 2015 Nick Metcalf. All rights reserved.
+//  Created by Nicholas Metcalf
 //
 
 #include "Random_Writer.h"
-#include <random>
 #include <time.h>
-
-static default_random_engine generator;
 
 void RandomWriter::append_result() {
   if (!this->result.length() && (k > 0)) {
@@ -29,7 +24,6 @@ void RandomWriter::load_source(ifstream &infs, string filename) {
     this->source = "";
     while (getline(infs, temp)) {
       this->source.append(temp);
-      //this->source.push_back('\n');
     }
     infs.close();
   }
@@ -48,8 +42,7 @@ void RandomWriter::update_next_chars() {
 }
 
 void RandomWriter::get_new_seed() {
-  uniform_int_distribution<int> dist(0,static_cast<int>(this->source.length()));
-  int pos = (dist(generator)*(int)time(nullptr)) % static_cast<int>((this->source.length())-k);
+  int pos = rand()%static_cast<int>((this->source.length())-k);
   string new_seed = "";
   if (!k) {
     new_seed.append(this->source.substr(pos, 1));
@@ -62,8 +55,7 @@ void RandomWriter::get_new_seed() {
 
 void RandomWriter::get_next_seed() {
   char next = '\0';
-  uniform_int_distribution<int> dist(0,static_cast<int>(this->next_chars.size())-1);
-  next = next_chars[(dist(generator)*(int)time(nullptr)) % next_chars.size()];
+  next = next_chars[rand()%next_chars.size()];
   seed.push_back(next);
   seed.erase(0,1);
 }
